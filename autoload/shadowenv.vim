@@ -19,22 +19,22 @@ function! shadowenv#hook() abort
   "   ^         ^          ^
   "   export    FOO=       bar
   for l:instruction in split(l:contents, "\x1E")
-    let a:operands = split(l:instruction, "\x1F")
-    let l:opcode = a:operands[0]
+    let l:operands = split(l:instruction, "\x1F")
+    let l:opcode = l:operands[0]
 
     if l:opcode == "\x01" " SET_UNEXPORTED
       " __shadowenv_data specifically is set, but not exported to
       " subprocesses. It lives only in the shell session itself as an
       " unexported variable.
-      if a:operands[1] != '__shadowenv_data'
-        echoerr 'unrecognized operand for SET_UNEXPORTED operation: '.a:operands[1]
+      if l:operands[1] != '__shadowenv_data'
+        echoerr 'unrecognized operand for SET_UNEXPORTED operation: '.l:operands[1]
         return
       endif
-      let s:shadowenv_data = a:operands[2]
+      let s:shadowenv_data = l:operands[2]
     elseif l:opcode == "\x02" " SET_EXPORTED
-      execute('let $'.a:operands[1].' = a:operands[2]')
+      execute('let $'.l:operands[1].' = l:operands[2]')
     elseif l:opcode == "\x03" " UNSET
-      execute('unlet $'.a:operands[1])
+      execute('unlet $'.l:operands[1])
     else
       echoerr 'unrecognized shadowenv opcode: '.l:opcode
       return
