@@ -19,7 +19,7 @@ function! shadowenv#hook() abort
   "   ^         ^          ^
   "   export    FOO=       bar
   for l:instruction in split(l:contents, "\x1E")
-    let l:operands = split(l:instruction, "\x1F")
+    let l:operands = split(l:instruction, "\x1F", 1)
     let l:opcode = l:operands[0]
 
     if l:opcode == "\x01" " SET_UNEXPORTED
