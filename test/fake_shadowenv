@@ -1,0 +1,5 @@
+#!/bin/sh
+# Test double for the shadowenv binary: emits a canned porcelain payload
+# instead of evaluating any .shadowenv.d program. The payload is written by
+# the test suite to the file named by $SHADOWENV_FAKE_OUTPUT.
+cat "$SHADOWENV_FAKE_OUTPUT"
